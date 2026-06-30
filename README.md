@@ -113,3 +113,9 @@ python main.py
 ## 👨‍💻 Author
 
 **Krishna Chaitanya**
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
