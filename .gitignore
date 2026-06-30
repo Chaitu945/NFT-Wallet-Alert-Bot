@@ -1,27 +1,22 @@
 # Python
-
-**pycache**/
-*.py[cod]
+__pycache__/
+*.pyc
 *.pyo
+*.pyd
 
 # Virtual Environment
-
 .venv/
 venv/
 
-# Environment Variables
-
+# Environment
 .env
 
 # VS Code
-
 .vscode/
 
-# OS Files
+# State
+state.json
 
+# OS
 .DS_Store
 Thumbs.db
-
-# Logs
-
-*.log
