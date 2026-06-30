@@ -1,12 +1,14 @@
 # 🚀 NFT Wallet Tracker Bot
 
-A Python-based Telegram bot that monitors Ethereum wallets in real time and sends rich alerts whenever NFTs are bought or received.
+A Python-based Telegram bot that monitors **Ethereum wallets** in real time and sends rich Telegram alerts whenever NFTs are **bought** or **received**.
+
+---
 
 ## ✨ Features
 
 - 🔔 Real-time Telegram notifications
 - 🛒 Detects NFT purchases
-- 📥 Detects NFT transfers/airdrops
+- 📥 Detects NFT transfers / airdrops
 - 🏪 Marketplace detection (OpenSea, Blur, etc.)
 - 🖼 Collection logo preview
 - 💎 Live floor price
@@ -14,6 +16,8 @@ A Python-based Telegram bot that monitors Ethereum wallets in real time and send
 - 🔗 Etherscan transaction link
 - 🚫 Duplicate alert prevention
 - ⚡ Built with AsyncIO
+
+---
 
 ## 🛠 Tech Stack
 
@@ -26,11 +30,13 @@ A Python-based Telegram bot that monitors Ethereum wallets in real time and send
 - python-dotenv
 - Git
 
+---
+
 ## 📁 Project Structure
 
-```
+```text
 NFTAlertBot/
-
+│
 ├── alchemy.py
 ├── config.py
 ├── main.py
@@ -43,25 +49,13 @@ NFTAlertBot/
 └── .gitignore
 ```
 
-## 📸 Example Alert
+---
 
-```text
-🛒 NFT BOUGHT
+## 📸 Example Telegram Alert
 
-🎨 Collection: Nightborn
+![Telegram Alert](images/example-alert.jpg)
 
-🏪 Marketplace: OpenSea
-
-📦 NFTs Bought: 20
-
-💎 Floor: 0.0022 ETH
-
-🌊 OpenSea
-https://opensea.io/collection/nightborneth
-
-🔗 Transaction
-https://etherscan.io/tx/...
-```
+---
 
 ## 🚀 Installation
 
@@ -75,26 +69,32 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## ✅ Completed
+---
+
+## ✅ Current Features
 
 - [x] Ethereum wallet monitoring
 - [x] Telegram alerts
 - [x] Purchase vs Received detection
 - [x] Marketplace detection
-- [x] Collection logo
+- [x] Collection logo preview
 - [x] Live floor price
-- [x] OpenSea link
-- [x] Etherscan link
+- [x] OpenSea collection link
+- [x] Etherscan transaction link
 - [x] Duplicate transaction prevention
+
+---
 
 ## 🔮 Roadmap
 
 - [ ] Actual purchase price
-- [ ] Multi-wallet tracking
+- [ ] Multi-wallet support
 - [ ] Discord notifications
-- [ ] Dashboard
 - [ ] Cloud deployment
+- [ ] Dashboard
 - [ ] Database support
+
+---
 
 ## 👨‍💻 Author
 
