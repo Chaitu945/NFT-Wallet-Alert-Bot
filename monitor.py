@@ -4,8 +4,8 @@ import json
 from telegram_bot import send_alert
 from config import TARGET_WALLET
 from alchemy import get_latest_nft_transfer
-from alchemy import get_collection_name
-from alchemy import get_nft_metadata
+from alchemy import get_collection_info, get_floor_price
+from transaction import classify_transaction
 
 
 STATE_FILE = "state.json"
@@ -59,81 +59,65 @@ async def monitor():
 
             contract = tx_transfers[0]["rawContract"]["address"]
 
-            collection_data = get_collection_name(contract)
-            collection = collection_data.get("openSeaMetadata", {}).get(
-                "collectionName",
-                collection_data.get("name", "Unknown Collection")
-            )
+            info = get_collection_info(contract)
 
-            floor = collection_data.get("openSeaMetadata", {}).get("floorPrice")
+            collection = info["name"]
+            floor = get_floor_price(contract)
+            slug = info["slug"]
+            photo = info["image"]
 
-            if floor is None:
-                floor = "N/A"
-            
+            count = len(tx_transfers)
 
-            slug = collection_data.get("openSeaMetadata", {}).get(
-                "collectionSlug",
-                ""
-            )
-
-            nft_names = []
-            photo = None
-
-            for i, t in enumerate(tx_transfers):
-
-                try:
-                    nft = get_nft_metadata(
-                        t["rawContract"]["address"],
-                        t["tokenId"]
-                )
-                except Exception as e:
-                    print(f"Metadata error: {e}")
-                    continue
-
-                name = nft.get("name")
-
-                if not name or name.lower() == collection.lower():
-                    name = f"#{int(t['tokenId'], 16)}"
-
-                nft_names.append(name)
-
-                if i == 0:
-                    photo = nft.get("image", {}).get("pngUrl")
-
-                    if not photo:
-                        photo = nft.get("image", {}).get("cachedUrl")
-            
+            if count == 0:
+                continue
 
             if isinstance(floor, (int, float)):
                 floor_text = f"{floor} ETH"
-                est_value = round(floor * len(nft_names), 4)
-                est_value_text = f"{est_value} ETH"
             else:
                 floor_text = "N/A"
-                est_value_text = "N/A"
+            
 
-            if not nft_names:
-                continue
+            tx_info = classify_transaction(tx_hash)
+
+            tx_type = tx_info["type"]
+
+            marketplace = tx_info["marketplace"]
+
+            title = "🐋 NFT PURCHASE" if tx_type == "PURCHASE" else "📥 NFT RECEIVED"
             
 
             message = (
-    f"🚨 NFT SWEEP\n\n"
-    f"🎨 Collection: {collection}\n\n"
-    f"📦 NFTs Bought: {len(nft_names)}\n\n"
-    f"💎 Floor: {floor_text}\n\n"
-    f"💰 Est. Floor Value: {est_value_text}\n\n"
-    f"🏷 NFTs\n"
-    f"{chr(10).join('• ' + x for x in nft_names)}\n\n"
-    f"🌊 OpenSea:\n"
-    f"https://opensea.io/collection/{slug}\n\n"
-    f"🔗 Transaction:\n"
-    f"https://etherscan.io/tx/{tx_hash}"
-)
+                f"{title}\n\n"
+                f"🎨 Collection: {collection}\n\n"
+                f"🏪 Marketplace: {marketplace or 'N/A'}\n\n"
+                f"📦 NFTs {'Bought' if tx_type == 'PURCHASE' else 'Received'}: {count}\n\n"
+            )
+
+            if floor is not None:
+                message += f"💎 Floor: {floor} ETH\n\n"
+
+            
+            if slug:
+                message += (
+                    f"🌊 OpenSea:\n"
+                    f"https://opensea.io/collection/{slug}\n\n"
+                )
+
+            message += (
+                f"🔗 Transaction:\n"
+                f"https://etherscan.io/tx/{tx_hash}"
+            )
          
 
-            if photo:
-                await send_alert(message, photo)
-            else:
+            try:
+                if photo:
+                    await send_alert(message, photo)
+                else:
+                    await send_alert(message)
+
+            except Exception as e:
+                print(f"Telegram photo failed: {e}")
+
                 await send_alert(message)
 
         state["processed"] = list(processed)[-100:]
