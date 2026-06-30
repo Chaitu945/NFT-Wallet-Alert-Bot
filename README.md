@@ -60,13 +60,27 @@ NFTAlertBot/
 ## 🚀 Installation
 
 ```bash
-git clone <your-repository>
+git clone https://github.com/yourusername/NFTAlertBot.git
 
 cd NFTAlertBot
+
+```bash
+git clone https://github.com/...
+
+cd NFTAlertBot
+
+python -m venv .venv
+
+source .venv/bin/activate      # Linux/macOS
+
+# or
+
+.venv\Scripts\activate         # Windows
 
 pip install -r requirements.txt
 
 python main.py
+```
 ```
 
 ---
