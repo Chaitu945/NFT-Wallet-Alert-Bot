@@ -113,7 +113,7 @@ python main.py
 
 ## 🚀 Next Project
 
-### Whale Wallet Intelligence Platform (Coming Soon)
+### Whale Wallet Intelligence Platform ( Coming Soon )
 
 - Multi-wallet tracking
 - Web dashboard
