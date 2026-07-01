@@ -110,6 +110,20 @@ python main.py
 
 ---
 
+
+## 🚀 Next Project
+
+### Whale Wallet Intelligence Platform (Coming Soon)
+
+- Multi-wallet tracking
+- Web dashboard
+- Telegram alerts
+- Analytics
+- SQLite database
+
+
+---
+
 ## 💡 Why I Built This
 
 I built this project to learn blockchain development by creating a real-world application that monitors Ethereum wallets and sends instant Telegram alerts for NFT purchases and transfers. It demonstrates working with blockchain APIs, asynchronous programming, and event-driven automation.
