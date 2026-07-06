@@ -33,6 +33,12 @@ async def monitor():
 
         result = get_latest_nft_transfer(TARGET_WALLET)
 
+        # Handle API errors (e.g. rate limiting)
+        if "error" in result:
+            print("Alchemy Error:", result["error"]["message"])
+            await asyncio.sleep(10)
+            continue
+
         transfers = result["result"]["transfers"]
 
         if not transfers:
