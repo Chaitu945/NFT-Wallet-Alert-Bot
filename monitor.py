@@ -2,7 +2,7 @@ import asyncio
 import json
 
 from telegram_bot import send_alert
-from config import TARGET_WALLET
+from config import TARGET_WALLETS
 from alchemy import get_latest_nft_transfer
 from alchemy import get_collection_info, get_floor_price
 from transaction import classify_transaction
@@ -30,14 +30,18 @@ async def monitor():
     processed = set(state.get("processed", []))
 
     while True:
+        print("checking wallets...")
 
-        result = get_latest_nft_transfer(TARGET_WALLET)
+        for wallet in TARGET_WALLETS:
+            print(wallet)
+            result = get_latest_nft_transfer(wallet)
+    # rest of your existing logic
 
         # Handle API errors (e.g. rate limiting)
         if "error" in result:
-            print("Alchemy Error:", result["error"]["message"])
-            await asyncio.sleep(10)
-            continue
+           print(result)
+           await asyncio.sleep(10)
+           continue 
 
         transfers = result["result"]["transfers"]
 
@@ -93,11 +97,12 @@ async def monitor():
             
 
             message = (
-                f"{title}\n\n"
-                f"🎨 Collection: {collection}\n\n"
-                f"🏪 Marketplace: {marketplace or 'N/A'}\n\n"
-                f"📦 NFTs {'Bought' if tx_type == 'PURCHASE' else 'Received'}: {count}\n\n"
-            )
+        f"{title}\n\n"
+        f"👛 Wallet: {wallet[:6]}...{wallet[-4:]}\n\n"
+        f"🎨 Collection: {collection}\n\n"
+        f"🏪 Marketplace: {marketplace or 'N/A'}\n\n"
+        f"📦 NFTs {'Bought' if tx_type == 'PURCHASE' else 'Received'}: {count}\n\n"
+    )
 
             if floor is not None:
                 message += f"💎 Floor: {floor} ETH\n\n"
